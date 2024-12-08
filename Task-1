@@ -1,0 +1,206 @@
+/*Code for creating a To-Do List*/
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To-Do List</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 400px;
+            text-align: center;
+        }
+
+        header {
+            background: linear-gradient(to right, #28a745, #218838);
+            color: #fff;
+            padding: 20px;
+            border-radius: 8px 8px 0 0;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 1.5rem;
+        }
+
+        header p {
+            margin: 5px 0 0;
+            font-size: 1rem;
+        }
+
+        .input-section {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        #taskInput {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        #addTaskBtn {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        #addTaskBtn:hover {
+            background-color: #0056b3;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+            margin-top: 20px;
+        }
+
+        li {
+            background: #f9f9f9;
+            margin: 10px 0;
+            padding: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        li button {
+            margin-left: 10px;
+            padding: 5px 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .edit-btn {
+            background-color: #ffc107;
+            color: #fff;
+        }
+
+        .delete-btn {
+            background-color: #dc3545;
+            color: #fff;
+        }
+
+        .edit-btn:hover {
+            background-color: #e0a800;
+        }
+
+        .delete-btn:hover {
+            background-color: #c82333;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Welcome to Your To-Do List</h1>
+            <p id="welcomeMessage"></p>
+        </header>
+        <div class="input-section">
+            <input type="text" id="taskInput" placeholder="Enter a new task...">
+            <button id="addTaskBtn">Add Task</button>
+        </div>
+        <ul id="taskList"></ul>
+    </div>
+    <script>
+        const taskInput = document.getElementById('taskInput');
+        const addTaskBtn = document.getElementById('addTaskBtn');
+        const taskList = document.getElementById('taskList');
+        const welcomeMessage = document.getElementById('welcomeMessage');
+
+        // Load tasks from local storage
+        let tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+
+        // Prompt for the user name on every reload
+        const getUserName = () => {
+            const userName = prompt('Please enter your name:');
+            if (userName) {
+                welcomeMessage.textContent = `Hello, ${userName}! Let's get productive.`;
+            } else {
+                welcomeMessage.textContent = `Hello! Let's get productive.`;
+            }
+        };
+
+        // Call getUserName on page load
+        getUserName();
+
+        // Save tasks to local storage
+        const saveToLocalStorage = () => {
+            localStorage.setItem('tasks', JSON.stringify(tasks));
+        };
+
+        // Render tasks
+        const renderTasks = () => {
+            taskList.innerHTML = ''; // Clear the list
+            tasks.forEach((task, index) => {
+                const li = document.createElement('li');
+                li.innerHTML = `
+                    <span>${task}</span>
+                    <div>
+                        <button class="edit-btn" onclick="editTask(${index})">Edit</button>
+                        <button class="delete-btn" onclick="deleteTask(${index})">Delete</button>
+                    </div>
+                `;
+                taskList.appendChild(li);
+            });
+        };
+
+        // Add Task
+        addTaskBtn.addEventListener('click', () => {
+            const task = taskInput.value.trim();
+            if (task) {
+                tasks.push(task);
+                saveToLocalStorage();
+                renderTasks();
+                taskInput.value = ''; // Clear input field
+            } else {
+                alert('Please enter a task!');
+            }
+        });
+
+        // Edit Task
+        window.editTask = (index) => {
+            const newTask = prompt('Edit your task:', tasks[index]);
+            if (newTask) {
+                tasks[index] = newTask.trim();
+                saveToLocalStorage();
+                renderTasks();
+            }
+        };
+
+        // Delete Task
+        window.deleteTask = (index) => {
+            tasks.splice(index, 1);
+            saveToLocalStorage();
+            renderTasks();
+        };
+
+        // Initial rendering
+        renderTasks();
+    </script>
+</body>
+</html>
