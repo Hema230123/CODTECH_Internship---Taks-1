@@ -4,7 +4,7 @@
 - ID: CT08DS10010
 - Domain: Frontend Web Development
 - Duration: November to December 2024
-- Mentor: 
+- Mentor: NEELA SANTHOSH
 
 ## Overview of the Project
 ### PROJECT: To-Do List Application
