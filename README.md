@@ -1,6 +1,6 @@
 # CODTECH_Internship---Taks-1
-# Name: HEMA LALITHAMBICA MYPALA
-# Company: CODTECH IT SOLUTIONS
+## Name: HEMA LALITHAMBICA MYPALA
+## Company: CODTECH IT SOLUTIONS
 ID: CT08DS10010
 Domain: Frontend Web Development
 Duration: November to December 2024
